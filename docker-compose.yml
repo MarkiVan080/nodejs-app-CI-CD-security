@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  nodejs-app:
+    build: ./app
+    container_name: nodejs-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/usr/src/app
+    command: npm start
+    depends_on:
+      - sonarqube
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  zap:
+    image: owasp/zap2docker-stable
+    container_name: zap
+    ports:
+      - "8081:8080"
+    command: zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.disablekey=true
+
+volumes:
+  jenkins_home:
