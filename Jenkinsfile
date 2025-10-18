@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/yourusername/nodejs-devsecops.git'
+                git 'https://github.com/MarkiVan080/nodejs-app-CI-CD-security.git'
             }
         }
 

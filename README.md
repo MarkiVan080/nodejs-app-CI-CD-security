@@ -35,7 +35,7 @@ nodejs-devsecops/
 1. Clone repo:
 
 ```bash
-git clone https://github.com/yourusername/nodejs-devsecops.git
+git clone https://github.com/MarkiVan080/nodejs-app-CI-CD-security.git
 cd nodejs-devsecops
 
 ```
