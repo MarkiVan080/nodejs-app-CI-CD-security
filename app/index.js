@@ -1,24 +1,34 @@
 const express = require('express');
+const path = require('path');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
+// Middleware to parse JSON
 app.use(express.json());
 
-let todos = [];
+// Serve static HTML from public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Todos API
+let todos = [
+  { id: 1, task: "Learn DevSecOps" },
+  { id: 2, task: "Set up Docker pipeline" }
+];
+
+// GET all todos
 app.get('/todos', (req, res) => {
-    res.json(todos);
+  res.json(todos);
 });
 
+// POST a new todo
 app.post('/todos', (req, res) => {
-    const { task } = req.body;
-    if(!task) return res.status(400).json({ error: "Task is required" });
-    todos.push({ task });
-    res.status(201).json({ message: "Task added" });
+  const { task } = req.body;
+  const newTodo = { id: todos.length + 1, task };
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
 });
 
-app.listen(port, () => {
-    console.log(`App running at http://localhost:${port}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-module.exports = app;
